@@ -18,13 +18,13 @@ on:
 #Send a notification to Slack
 env:
   RELEASE_REVISION: "pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}"
-  AWS_ACCESS_KEY_ID: '${{ env.AWS_ACCESS_KEY_ID }}'
-  AWS_SECRET_ACCESS_KEY: '${{ env.AWS_SECRET_ACCESS_KEY }}'
-  AWS_REGION: "eu-central-1"
-  KUBE_CONFIG_DATA: '${{ env.KUBE_CONFIG_DATA }}'
-  KUBE_NAMESPACE: '${{ env.KUBE_NAMESPACES }}'
-  ECR_REPOSITORY: '${{ env.PRV_ECR_REPO }}'
- # SLACK_WEBHOOK_URL: '${{ secrets.SLACK_WEBHOOK_URL }}'
+  AWS_ACCESS_KEY_ID: ${{ secret.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secret.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: ${{ secret.AWS_REGION }}
+  KUBE_CONFIG_DATA: ${{ secret.KUBE_CONFIG_DATA }}
+  KUBE_NAMESPACE: ${{ secret.KUBE_NAMESPACES }}
+  ECR_REPOSITORY: ${{ secret.PRV_ECR_REPO }}
+ # SLACK_WEBHOOK_URL: '${{ secrets.SLACK_WEBHOOK_URL }}
 
   # Allows you to run this workflow manually from the Actions tab
   #workflow_dispatch:
