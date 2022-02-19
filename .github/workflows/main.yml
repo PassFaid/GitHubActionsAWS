@@ -43,7 +43,7 @@ jobs:
     - name: Checkout                                  
       uses: actions/checkout@v2                       
       with:                                           
-        ref: ${{ github.event.pull_request.head.sha }
+        ref: ${{ github.event.pull_request.head.sha }}
     #Configure AWS Credentials (IAM full admin role at the moment)
     - name: Configure AWS credentials                          
       uses: aws-actions/configure-aws-credentials@v1           
