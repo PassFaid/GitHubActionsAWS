@@ -104,6 +104,7 @@ jobs:
       with:
         args: set image deployment/my-pod app=$RELEASE_IMAGE 
 
+
     - name: Verify Kubernetes deployment                               
       uses: kodermax/kubectl-aws-eks@master 
       env:                                                                                                          
