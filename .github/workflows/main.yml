@@ -98,11 +98,12 @@ jobs:
     
     - name: Deploy to Kubernetes cluster                                                                            
       uses: kodermax/kubectl-aws-eks@master                                                                         
-      env:                                                                                                          
+      env:   
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}      
         RELEASE_IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.RELEASE_REVISION }}
         KUBE_NAMESPACES: ${{ env.KUBE_NAMESPACES }}
       with:
-        args: set image deployment/my-pod app=$RELEASE_IMAGE 
+        args: set image deployment/$ECR_REGISTRY app=$RELEASE_IMAGE 
 
 
     - name: Verify Kubernetes deployment                               
