@@ -95,22 +95,16 @@ jobs:
 #
 #        rm -rf /tmp/.buildx-cache
 #        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-#    
-    - name: Deploy new Image to existin deployment to Kubernetes cluster                                                                            
+    
+    #Contact via Slack Channel to begin deployment
+    
+    - name: Deploy to Kubernetes cluster                                                                            
       uses: kodermax/kubectl-aws-eks@master                                                                         
       env:   
         RELEASE_IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.RELEASE_REVISION }}
-      with:
-        args: set image deployment/payment-deployment payment=${{ env.RELEASE_IMAGE }} 
 
-
-#- name: Deploy to Kubernetes cluster                                                                            
-#  uses: kodermax/kubectl-aws-eks@master                                                                         
-#  env:                                                                                                          
-#    RELEASE_IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.RELEASE_REVISION }}
-#  with:                                                                                                         
-#    args: set image deployment/my-pod app=${{ env.RELEASE_IMAGE }} --record -n $KUBE_NAMESPACE   
-
+      with:                                                                                                         
+        args: set image deployment/pleo-payment image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
 
 
     - name: Verify Kubernetes deployment                               
@@ -118,4 +112,6 @@ jobs:
       env:                                                                                                          
         KUBE_NAMESPACES: ${{ env.KUBE_NAMESPACES }}      
       with:                                                            
-        args: rollout status deploy my-pod 
+
+        args: rollout status deploy pleo-payment
+
