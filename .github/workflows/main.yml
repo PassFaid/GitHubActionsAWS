@@ -22,7 +22,7 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
   KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-  KUBE_NAMESPACE: ${{ secrets.KUBE_NAMESPACES }}
+  KUBE_NAMESPACES: ${{ secrets.KUBE_NAMESPACES }}
   ECR_REPOSITORY: ${{ secrets.PRV_ECR_REPO }}
  # SLACK_WEBHOOK_URL: '${{ secrets.SLACK_WEBHOOK_URL }}
 
@@ -67,6 +67,7 @@ jobs:
         echo "Pushing image to ECR..."
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" 
+        
       
       
 #    - name: Set up Docker Buildx                             
@@ -99,12 +100,18 @@ jobs:
     
     - name: Deploy to Kubernetes cluster                                                                            
       uses: kodermax/kubectl-aws-eks@master                                                                         
-      env:                                                                                                          
+      env:   
         RELEASE_IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.RELEASE_REVISION }}
+
       with:                                                                                                         
         args: set image deployment/pleo-payment image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
 
+
     - name: Verify Kubernetes deployment                               
-      uses: kodermax/kubectl-aws-eks@master                            
+      uses: kodermax/kubectl-aws-eks@master 
+      env:                                                                                                          
+        KUBE_NAMESPACES: ${{ env.KUBE_NAMESPACES }}      
       with:                                                            
+
         args: rollout status deploy pleo-payment
+
