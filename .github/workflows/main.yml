@@ -106,10 +106,11 @@ jobs:
       with:                                                                                                         
         args: set image deployment/pleo-payment image=$RELEASE_IMAGE 
 
+
     - name: Verify Kubernetes deployment                               
       uses: kodermax/kubectl-aws-eks@master 
       env:                                                                                                          
-        KUBE_NAMESPACES: ${{ env.KUBE_NAMESPACES }}      
+        KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}   
       with:                                                            
 
         args: rollout status deploy pleo-payment
