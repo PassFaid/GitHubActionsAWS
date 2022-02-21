@@ -95,6 +95,17 @@ jobs:
 #        rm -rf /tmp/.buildx-cache
 #        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
     
+    
+    #Change Template yml with new Image
+    - name: Changing Template yml with new Image 
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ secrets.PRV_ECR_REPO }}
+        IMAGE_TAG: ${{ env.RELEASE_REVISION }}
+      run: sed -i 's/_IMAGE_REPO\|John/$ECR_REGISTRY\/$ECR_REPOSITORY:$IMAGE_TAG/' payment-deploymentTEMPLATE.yml
+
+    #Contact via Slack Channel to begin deployment
+    
     - name: Deploy to Kubernetes cluster                                                                            
       uses: kodermax/kubectl-aws-eks@master                                                                         
       env:                                                                                                          
