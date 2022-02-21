@@ -98,14 +98,14 @@ jobs:
     
     #Contact via Slack Channel to begin deployment
     #
-    
+     
     - name: Deploy to Kubernetes cluster                                                                            
       uses: kodermax/kubectl-aws-eks@master                                                                         
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         RELEASE_IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.RELEASE_REVISION }}
       with:                                                                                                         
-        args: set image deployment/pleo-payment image=${{ env.RELEASE_IMAGE }}       
+        args: set image deployment/pleo-payment payment=${{ env.RELEASE_IMAGE }}       
 
 
     - name: Verify Kubernetes deployment                               
