@@ -5,7 +5,7 @@ metadata:
   labels:
     app: pleo-payment
 spec:
-  replicas: $REPL_NO  #This needs to be setup from the start
+  replicas: 1 
   selector:
     matchLabels:
       app: payment
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: payment
-        image: $IMAGE_REPO   #This needs to be setup from the start
+        image: $IMAGE_REPO   
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9000
