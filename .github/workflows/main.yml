@@ -95,15 +95,6 @@ jobs:
 #        rm -rf /tmp/.buildx-cache
 #        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
     
-    
-    #Change Template yml with new Image
-    - name: Changing Template yml with new Image 
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ${{ secrets.PRV_ECR_REPO }}
-        IMAGE_TAG: ${{ env.RELEASE_REVISION }}
-      run: sed -i 's/_IMAGE_REPO/$ECR_REGISTRY\/$ECR_REPOSITORY:$IMAGE_TAG/' ./payment-deploymentTEMPLATE.yml
-
     #Contact via Slack Channel to begin deployment
     
     - name: Deploy to Kubernetes cluster                                                                            
@@ -111,9 +102,9 @@ jobs:
       env:                                                                                                          
         RELEASE_IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.RELEASE_REVISION }}
       with:                                                                                                         
-        args: set image deployment/my-pod app=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -n $KUBE_NAMESPACES
+        args: set image deployment/payment_deployment image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
 
     - name: Verify Kubernetes deployment                               
       uses: kodermax/kubectl-aws-eks@master                            
       with:                                                            
-        args: rollout status deploy my-pod -n $KUBE_NAMESPACES 
+        args: rollout status deploy payment_deployment
